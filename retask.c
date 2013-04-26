@@ -123,7 +123,7 @@ Queue* queue_new(const char *name, const char *host, int port, int db, const cha
     q->host = strdup(host);
     q->port = port;
     q->db = db;
-    if (password)
+    if (password != NULL)
         q->password = strdup(password);
 
     return q;
@@ -143,34 +143,40 @@ void queue_destroy(Queue* self){
 }
 
 int queue_connect(Queue* self) {
-    redisReply *reply;
+    redisReply *reply = NULL;
 
     self->c = redisConnect(self->host, self->port);
     if (self->c->err)
         return -1;
-    // if (self->password)
-    // {
-    //     reply = redisCommand(self->c, "auth %s", self->name);
-    //     if ( reply->type == REDIS_REPLY_ERROR )
-    //     {
-    //         printf( "Error: %s\n", reply->str );
-    //         freeReplyObject(reply);
-    //         return -1;
-    //     }
-    // }
+    if (self->password)
+    {
+        reply = redisCommand(self->c, "auth %s", self->name);
+        if ( reply->type == REDIS_REPLY_ERROR )
+        {
+            printf( "Error: %s\n", reply->str );
+            freeReplyObject(reply);
+            return -1;
+        }
 
-    // if (self->db != 0)
-    // {
-    //     reply = redisCommand(self->c, "select %d", self->db);
-    //     if ( reply->type == REDIS_REPLY_ERROR )
-    //     {
-    //         printf( "Error: %s\n", reply->str );
-    //         freeReplyObject(reply);
-    //         return -1;
-    //     }
-    // }
+    }
 
-    // freeReplyObject(reply);
+    if (reply != NULL)
+            freeReplyObject(reply);    
+
+    if (self->db != 0)
+    {
+        reply = redisCommand(self->c, "select %d", self->db);
+        if ( reply->type == REDIS_REPLY_ERROR )
+        {
+            printf( "Error: %s\n", reply->str );
+            freeReplyObject(reply);
+            return -1;
+        }
+    }
+
+    if (reply != NULL)
+        freeReplyObject(reply);    
+
     return 0;
 }
 

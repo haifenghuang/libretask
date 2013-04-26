@@ -4,9 +4,9 @@
 
 int main()
 {
-    Queue* q = queue_new("example");
+    Queue* q = queue_new("example", "localhost", 6379, 0, NULL);
     queue_connect(q);
-    printf("%d\n", queue_length(q));
+    printf("Current Queue Length: %lld\n", queue_length(q));
 
     Task* t = queue_dequeue(q);
     if (!t) {

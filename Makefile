@@ -16,11 +16,11 @@ HEADERDIR = $(PREFIX)/include
 
 all:
 	gcc $(CFLAGS) -I/usr/include/hiredis/ $(LIBS) $(SOURCES) -o $(TARGET)
-	gcc -g dequeue_example.c -o dequeue_example -lhiredis $(CFLAGS_BIN) -I/usr/include/hiredis/ -L. $(LIBS) -lretask
-	#gcc -g dequeue_example2.c -o dequeue_example2 -lhiredis -ljson -lretask -I/usr/include/hiredis/ -L./ -fstack-protector-all
-	#gcc -g enqueue_example.c -o enqueue_example -lhiredis -ljson -lretask -I/usr/include/hiredis/ -L./ -fstack-protector-all
-	#gcc -g dequeue2.c -o dequeue2 -lhiredis -ljson -lretask -I/usr/include/hiredis/ -L./ -fstack-protector-all
-	#gcc -g enqueue2.c -o enqueue2 -lhiredis -ljson -lretask -I/usr/include/hiredis/ -L./ -fstack-protector-all
+	gcc -g dequeue_example.c -o dequeue_example $(CFLAGS_BIN) -I/usr/include/hiredis/ -L. $(LIBS) -lretask
+	gcc -g dequeue_example2.c -o dequeue_example2 $(CFLAGS_BIN) -I/usr/include/hiredis/ -L. $(LIBS) -lretask
+	gcc -g enqueue_example.c -o enqueue_example $(CFLAGS_BIN) -I/usr/include/hiredis/ -L. $(LIBS) -lretask
+	gcc -g dequeue2.c -o dequeue2 $(CFLAGS_BIN) -I/usr/include/hiredis/ -L. $(LIBS) -lretask
+	gcc -g enqueue2.c -o enqueue2 $(CFLAGS_BIN) -I/usr/include/hiredis/ -L. $(LIBS) -lretask
 
 .PHONY: install
 install:
